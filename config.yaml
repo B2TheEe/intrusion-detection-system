@@ -1,0 +1,30 @@
+capture:
+  flow_timeout_tcp: 30        # seconds before an idle TCP flow is expired
+  flow_timeout_udp: 15
+  flow_timeout_icmp: 5
+  timeout_check_interval: 5  # how often to sweep for timed-out flows
+
+models:
+  save_dir: saved_models
+  isolation_forest:
+    n_estimators: 200
+    contamination: 0.01       # assumed fraction of anomalies in baseline
+    max_samples: auto
+    random_state: 42
+  min_train_samples: 200      # refuse to train on fewer flows than this
+
+detection:
+  score_threshold: 0.60       # normalised anomaly score [0,1] above which we alert
+  cooldown_seconds: 10        # min seconds between alerts for the same src_ip
+
+alerts:
+  severity_thresholds:
+    high: 0.80
+    medium: 0.60
+    low: 0.40
+  max_recent_display: 15
+
+demo:
+  flows_per_second: 8
+  attack_probability: 0.07    # fraction of flows that are synthetic attacks
+  seed: 42
